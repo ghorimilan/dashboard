@@ -1,0 +1,51 @@
+<app-header></app-header>
+
+<md-sidenav-container class="example-container">
+  <md-sidenav #sidenav class="example-sidenav"
+              [style.width.px]="open==true?250:58"
+              align="start" opened>
+    <div class="side-nav-full">
+      <div class="side-nav-menu">
+        <h2 *ngIf="open">
+          <a href="" (click)="closeSideNav($event)" [style.float]="'right'">
+            <md-icon>close</md-icon>
+          </a>
+        </h2>
+        <h2 style="white-space: nowrap">
+          <a href="javascript:void(0)">
+            <span style="margin-left: 16px;margin-right: 10px;">
+              <md-icon style="position: relative;top: 4px;">dashboard</md-icon>
+            </span>
+            <span *ngIf="open">Dashboard</span>
+          </a>
+        </h2>
+      </div>
+      <div class="side-nav-click" (click)="openSideNav()">
+      </div>
+    </div>
+  </md-sidenav>
+
+  <div class="main-content">
+    <gridster [options]="gridsterOptions" [draggableOptions]="gridsterDraggableOptions"
+              (gridsterPositionChange)="logChanges($event)" (resize)="resize($event)" #gridster
+              style="min-height: calc(100% - 64px);">
+
+      <gridster-item *ngFor="let widget of widgets; let indx = index"
+                     id="{{widget.id}}"
+                     [(x)]="widget.x" [(y)]="widget.y"
+                     [(w)]="widget.w" [(h)]="widget.h">
+
+        <div class="panel-heading">
+          <h5 class="panel-title">{{ widget.title }}</h5>
+        </div>
+
+        <div class="panel-body">
+          <app-widget></app-widget>
+        </div>
+
+      </gridster-item>
+
+    </gridster>
+  </div>
+
+</md-sidenav-container>

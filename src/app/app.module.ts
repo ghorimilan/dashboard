@@ -4,15 +4,29 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import {GridsterModule} from "angular2gridster";
+import { HomeComponent } from './home/home.component';
+import {MdCardModule, MdToolbarModule, MdButtonModule, MdIconModule, MdSidenavModule} from "@angular/material";
+import { WidgetComponent } from './widget/widget.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    WidgetComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    GridsterModule,
+    MdCardModule,
+    MdToolbarModule,
+    MdButtonModule,
+    MdIconModule,
+    MdSidenavModule
   ],
   providers: [],
   bootstrap: [AppComponent]
