@@ -95,7 +95,7 @@ export class HomeComponent {
     console.log('resize', item);
   }
 
-  openSideNav(event) {
+  openSideNav() {
     if (!this.open) {
       this.open = true
     }
