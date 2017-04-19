@@ -1,4 +1,4 @@
-import {Component, HostListener, ViewChild} from '@angular/core';
+import {Component, HostListener, ViewChild, OnInit} from '@angular/core';
 import {GridsterComponent, IGridsterOptions, IGridsterDraggableOptions} from "angular2gridster";
 
 @Component({
@@ -6,7 +6,7 @@ import {GridsterComponent, IGridsterOptions, IGridsterDraggableOptions} from "an
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
   open: boolean = false;
 
@@ -23,44 +23,58 @@ export class HomeComponent {
     handlerClass: 'panel-heading'
   };
   title = 'Angular2Gridster';
-  widgets: Array<any> = [
-    {
-      x: 0, y: 0,
-      w: 1, h: 1,
-      title: 'Widget 1',
-      id: "Widget1",
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ' +
-      'dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea ' +
-      'commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla ' +
-      'pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est ' +
-      'laborum.'
-    },
-    {
-      x: 1, y: 0,
-      w: 1, h: 1,
-      title: 'Widget 2',
-      id: "Widget2",
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ' +
-      'dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea ' +
-      'commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla ' +
-      'pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est ' +
-      'laborum.'
-    },
-    {
-      x: 2, y: 0, w: 1, h: 1,
-      title: 'Widget 3',
-      id: "Widget3",
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ' +
-      'dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea ' +
-      'commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla ' +
-      'pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est ' +
-      'laborum.'
-    }
-  ];
+  widgets: Array<any> = [];
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.gridster.reload();
+  ngOnInit() {
+
+    let widgets;
+    try {
+      widgets = JSON.parse(localStorage.getItem("my-dashboard-widgets"));
+      if (widgets && widgets.length) {
+        this.widgets = widgets;
+      } else {
+        this.setInitWidgets();
+      }
+    } catch (e) {
+      this.setInitWidgets();
+    }
+  }
+
+  setInitWidgets() {
+    this.widgets = [
+      {
+        x: 0, y: 0,
+        w: 1, h: 1,
+        title: 'Widget 1',
+        id: "Widget1",
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ' +
+        'dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea ' +
+        'commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla ' +
+        'pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est ' +
+        'laborum.'
+      },
+      {
+        x: 1, y: 0,
+        w: 1, h: 1,
+        title: 'Widget 2',
+        id: "Widget2",
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ' +
+        'dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea ' +
+        'commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla ' +
+        'pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est ' +
+        'laborum.'
+      },
+      {
+        x: 2, y: 0, w: 1, h: 1,
+        title: 'Widget 3',
+        id: "Widget3",
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ' +
+        'dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea ' +
+        'commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla ' +
+        'pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est ' +
+        'laborum.'
+      }
+    ];
   }
 
   getTitle() {
@@ -73,8 +87,7 @@ export class HomeComponent {
   }
 
   logChanges(items: any) {
-    console.log('===>> Changed items: ', items);
-    console.log(items)
+    this.storePosition();
   }
 
   over(event) {
@@ -92,7 +105,7 @@ export class HomeComponent {
   }
 
   resize(item) {
-    console.log('resize', item);
+    this.storePosition();
   }
 
   openSideNav() {
@@ -104,10 +117,9 @@ export class HomeComponent {
   closeSideNav(event) {
     event.preventDefault()
     this.open = false
-    console.log(this.open)
   }
 
-  storePosstion(data: Array<any>) {
-
+  storePosition() {
+    localStorage.setItem("my-dashboard-widgets", JSON.stringify(this.widgets))
   }
 }
